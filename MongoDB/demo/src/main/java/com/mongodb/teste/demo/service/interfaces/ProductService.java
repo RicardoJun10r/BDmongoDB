@@ -20,4 +20,8 @@ public interface ProductService {
 
     String delete(String id);
 
+    Product findByid(String id);
+
+    String attProduct(String id, Product novo);
+
 }

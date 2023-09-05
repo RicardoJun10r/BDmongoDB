@@ -81,5 +81,41 @@ public class ProductServiceImpl implements ProductService {
         return "Removido [ " + id + " ]";
 
     }
+
+    @Override
+    public Product findByid(String id) {
+        return this.productRepository.findById(id).get();
+    }
+
+    @Override
+    public String attProduct(String id, Product novo) {
+
+        Product productOld = this.productRepository.findById(id).get();
+
+        attCampos(productOld, novo);
+
+        return this.productRepository.save(productOld).getProductId();
+
+    }
+
+    private void attCampos(Product velho, Product novo){
+        
+        if(novo.getName() != null && !novo.getName().isEmpty() && !novo.equals("string")){
+            velho.setName(novo.getName());
+        }
+
+        if(novo.getObs() != null && !novo.getObs().isEmpty() && !novo.equals("string")){
+            velho.setObs(novo.getObs());
+        }
+
+        if(novo.getPrice() != null && novo.getPrice() > 0.0){
+            velho.setPrice(novo.getPrice());
+        }
+
+        if(novo.getQuantity() != null && novo.getQuantity() > 0){
+            velho.setQuantity(novo.getQuantity());
+        }
+
+    }
     
 }
