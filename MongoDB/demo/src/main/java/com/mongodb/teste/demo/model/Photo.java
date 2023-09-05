@@ -12,7 +12,8 @@ import lombok.Data;
 @Document(collection = "photo")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Photo {
-    
+
+    // classe para receber fotos
     @Id
     private String id;
 
