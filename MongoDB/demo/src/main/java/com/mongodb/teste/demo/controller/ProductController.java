@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mongodb.teste.demo.model.Product;
+import com.mongodb.teste.demo.model.Supplier;
 import com.mongodb.teste.demo.service.interfaces.ProductService;
+import com.mongodb.teste.demo.shared.ProductDTO;
+import com.mongodb.teste.demo.shared.ProductDTOATT;
+import com.mongodb.teste.demo.shared.SupplierDTO;
 
 @RestController
 @RequestMapping("/api/product")
@@ -27,9 +31,10 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public String save(@RequestBody Product product){
-        
-        return this.productService.save(product);
+    public String save(@RequestBody ProductDTO product){
+
+        Product p = new Product(null, product.nome(), product.obs(), product.quantity(), product.price(), product.suppliers());
+        return this.productService.save(p);
 
     }
 
@@ -69,8 +74,21 @@ public class ProductController {
     }
 
     @PutMapping("/att")
-    public String attProduct(@RequestParam String id, @RequestBody Product novo){
-        return this.productService.attProduct(id, novo);
+    public String attProduct(@RequestParam String id, @RequestBody ProductDTOATT novo){
+        Product p = new Product(null, novo.nome(), novo.obs(), novo.quantity(), novo.price(), null);
+        return this.productService.attProduct(id, p);
+    }
+
+    @PostMapping("/supplier")
+    public String addSupplier(@RequestParam String id, @RequestBody SupplierDTO novo){
+        Supplier supplier = new Supplier(novo.name(), novo.address(), novo.ZIP_CODE(), novo.city(), novo.deliverDate());
+        return this.productService.addSupplier(id, supplier);
+    }
+
+    @PutMapping("/att/supplier")
+    public String attSupplier(@RequestParam String id, @RequestBody SupplierDTO novo){
+        Supplier supplier = new Supplier(novo.name(), novo.address(), novo.ZIP_CODE(), novo.city(), novo.deliverDate());
+        return this.productService.attSupplier(id, supplier);
     }
 
 }

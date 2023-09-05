@@ -3,17 +3,18 @@ package com.mongodb.teste.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import com.mongodb.teste.demo.model.Product;
+import com.mongodb.teste.demo.model.Supplier;
 import com.mongodb.teste.demo.repo.ProductRepository;
 import com.mongodb.teste.demo.service.interfaces.ProductService;
 
@@ -67,12 +68,6 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
-    // @Override
-    // public List<Document> getSuppliers() {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'getSuppliers'");
-    // }
-
     @Override
     public String delete(String id) {
 
@@ -115,6 +110,34 @@ public class ProductServiceImpl implements ProductService {
         if(novo.getQuantity() != null && novo.getQuantity() > 0){
             velho.setQuantity(novo.getQuantity());
         }
+
+    }
+
+    @Override
+    public String addSupplier(String id, Supplier supplier) {
+
+        Product productOld = this.productRepository.findById(id).get();
+
+        productOld.getSuppliers().add(supplier);
+
+        return this.productRepository.save(productOld).getProductId();
+
+    }
+
+    @Override
+    public String attSupplier(String id, Supplier supplier) {
+
+        Query query = new Query(Criteria.where("productId").is(id).and("suppliers.ZIP_CODE").is(supplier.getZIP_CODE()));
+
+        Update update = new Update()
+            .set("suppliers.$.name", supplier.getName())
+            .set("suppliers.$.address", supplier.getAddress())
+            .set("suppliers.$.city", supplier.getCity())
+            .set("suppliers.$.deliverDate", supplier.getDeliverDate());
+
+        this.mongoTemplate.updateFirst(query, update, Product.class);
+
+        return "Att !";
 
     }
     

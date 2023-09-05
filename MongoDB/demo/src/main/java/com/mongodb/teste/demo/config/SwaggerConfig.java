@@ -15,18 +15,18 @@ public class SwaggerConfig {
     public OpenAPI openAPI() {
     return new OpenAPI()
             .info(new Info()
-                    .title("Title - Rest API")
-                    .description("API exemplo de uso de Springboot REST API")
+                    .title("BD 2 - MongoDB")
+                    .description("CRUD completo usando MongoDB")
                     .version("1.0")
                     .termsOfService("Termo de uso: Open Source")
                     .license(new License()
                             .name("Apache 2.0")
-                            .url("http://www.seusite.com.br")
+                            .url("https://github.com/RicardoJun10r/BDmongoDB")
                     )
             ).externalDocs(
                     new ExternalDocumentation()
-                    .description("Seu nome")
-                    .url("http://www.seusite.com.br"));
+                    .description("Ricardo Junior, Vitor Duarte e João Felipe")
+                    .url("https://github.com/RicardoJun10r/BDmongoDB"));
     }
     
 }
