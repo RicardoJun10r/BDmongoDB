@@ -14,9 +14,13 @@ public interface ProductService {
 
     List<Product> listAll();
 
+    List<Product> listByPrice(Double minPrice, Double maxPrice);
+
     Page<Product> search(String name, Integer quantity, Double price, Pageable pageable);
 
     String delete(String id);
+
+    String deleteSupplier(String id, String zip_code);
 
     Product findByid(String id);
 

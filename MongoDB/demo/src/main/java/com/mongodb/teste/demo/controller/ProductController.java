@@ -45,10 +45,24 @@ public class ProductController {
 
     }
 
+    @DeleteMapping("/{id}/{zip}")
+    public String deleteSupplier(@PathVariable String id, @PathVariable String zip){
+
+        return this.productService.deleteSupplier(id, zip);
+
+    }
+
     @GetMapping
     public List<Product> findAll(){
 
         return this.productService.listAll();
+    
+    }
+
+    @GetMapping("/{minPrice}/{maxPrice}")
+    public List<Product> findByPriceBetween(@PathVariable Double minPrice, @PathVariable Double maxPrice){
+
+        return this.productService.listByPrice(minPrice, maxPrice);
     
     }
 

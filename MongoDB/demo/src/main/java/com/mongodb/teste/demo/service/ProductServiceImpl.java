@@ -140,5 +140,18 @@ public class ProductServiceImpl implements ProductService {
         return "Att !";
 
     }
+
+    @Override
+    public List<Product> listByPrice(Double minPrice, Double maxPrice) {
+        return this.productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    @Override
+    public String deleteSupplier(String id, String zip_code) {
+        Product product = this.productRepository.findById(id).get();
+        List<Supplier> suppliers = product.getSuppliers();
+        suppliers.removeIf(supplier -> supplier.getZIP_CODE().equals(zip_code));
+        return this.save(product);
+    }
     
 }
